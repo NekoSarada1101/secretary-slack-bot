@@ -1,6 +1,7 @@
 from flask import Flask
 import requests
 import json
+from settings import *
 
 app = Flask(__name__)
 
@@ -14,7 +15,7 @@ def hello_world():
     # Slackでは両方とも表示された
     json_data = json.dumps(data).encode("utf-8")
     response = requests.post(
-        "https://hooks.slack.com/services/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",
+        SLACK_WEBHOOK_URL,
         json_data)
     print(response)
     return 'Hello World!'
