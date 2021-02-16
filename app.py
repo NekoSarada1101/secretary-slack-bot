@@ -25,6 +25,7 @@ def hello_world():
 @app.route('/calendar', methods=['POST'])
 def calendar():
     google_calendar.post_calendar()
+    # TODO: FlaskのTypeErrorが発生するのを修正する
 
 
 if __name__ == '__main__':
