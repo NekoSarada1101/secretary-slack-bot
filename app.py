@@ -1,6 +1,7 @@
 from flask import Flask
 import requests
 import json
+import google_calendar
 from settings import *
 
 app = Flask(__name__)
@@ -19,6 +20,12 @@ def hello_world():
         json_data)
     print(response)
     return 'Hello World!'
+
+
+@app.route('/calendar', methods=['POST'])
+def calendar():
+    google_calendar.post_calendar()
+    # TODO: FlaskのTypeErrorが発生するのを修正する
 
 
 if __name__ == '__main__':
