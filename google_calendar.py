@@ -83,3 +83,7 @@ def create_calendar_payload(calendar_data: list) -> json:
     print(data)
     json_data = json.dumps(data).encode("utf-8")  # type: json
     return json_data
+
+
+if __name__ == "__main__":
+    post_calendar()
