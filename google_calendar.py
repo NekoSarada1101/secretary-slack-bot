@@ -9,7 +9,7 @@ today = datetime.now(timezone(timedelta(hours=+9), 'JST'))
 
 
 def post_calendar():
-    calendar_event_list = fetch_all_calendar_event_list()
+    calendar_event_list = fetch_all_calendar_event_list()  # type: list
     payload = create_calendar_payload(calendar_event_list)  # type: json
     response = requests.post(SLACK_WEBHOOK_URL, payload)
     print(response)
