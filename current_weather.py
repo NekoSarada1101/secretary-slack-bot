@@ -51,7 +51,6 @@ def create_weather_payload(weather_data: dict) -> json:
                 "color": "5579EC",
                 "text": " *湿度* ： `" + humidity + "`"
             },
-
         ]
     }
 

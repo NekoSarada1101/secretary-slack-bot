@@ -2,6 +2,8 @@ from google.oauth2 import service_account
 
 SLACK_WEBHOOK_URL = "SLACK_WEBHOOK_URL"
 
+SLACK_USER_ID = "SLACK_USER_ID"
+
 CALENDAR_ID_LIST = [
     "CALENDAR_ID_1",
     "CALENDAR_ID_2",

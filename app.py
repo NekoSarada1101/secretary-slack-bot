@@ -3,6 +3,7 @@ import requests
 import json
 import google_calendar
 import current_weather
+import rain_notice
 from settings import *
 
 app = Flask(__name__)
@@ -33,6 +34,11 @@ def calendar():
 def weather():
     current_weather.post_weather()
     # TODO: FlaskのTypeErrorが発生するのを修正する
+
+
+@app.route('/rain', methods=['POST'])
+def rain():
+    rain_notice.post_rain_notice()
 
 
 if __name__ == '__main__':
