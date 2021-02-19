@@ -2,7 +2,7 @@ from flask import Flask
 import requests
 import json
 import google_calendar
-import open_weather
+import current_weather
 from settings import *
 
 app = Flask(__name__)
@@ -31,7 +31,7 @@ def calendar():
 
 @app.route('/weather', methods=['POST'])
 def weather():
-    open_weather.post_weather()
+    current_weather.post_weather()
     # TODO: FlaskのTypeErrorが発生するのを修正する
 
 
