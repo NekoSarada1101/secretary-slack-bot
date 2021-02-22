@@ -20,3 +20,5 @@ CREDENTIALS = service_account.Credentials.from_service_account_file(SERVICE_ACCO
 
 OPEN_WEATHER_API_KEY = "OPEN_WEATHER_API_KEY"
 LAT_LNG = ["LAT", "LNG"]
+
+A3RT_API_KEY = "A3RT_API_KEY"
