@@ -4,6 +4,7 @@ import json
 import google_calendar
 import current_weather
 import rain_notice
+import talking
 from settings import *
 
 app = Flask(__name__)
@@ -39,6 +40,12 @@ def weather():
 @app.route('/rain', methods=['POST'])
 def rain():
     rain_notice.post_rain_notice()
+
+
+@app.route('/talk', methods=['POST'])
+def talk():
+    text = request.form.get('text')  # type: str
+    talking.post_talk(text)
 
 
 if __name__ == '__main__':
