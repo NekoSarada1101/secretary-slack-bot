@@ -5,6 +5,7 @@ import google_calendar
 import current_weather
 import rain_notice
 import talking
+import wikipedia
 from settings import *
 
 app = Flask(__name__)
@@ -46,6 +47,12 @@ def rain():
 def talk():
     text = request.form.get('text')  # type: str
     talking.post_talk(text)
+
+
+@app.route('/wiki', methods=['POST'])
+def wiki():
+    text = request.form.get('text')  # type: str
+    wikipedia.post_wiki(text)
 
 
 if __name__ == '__main__':
