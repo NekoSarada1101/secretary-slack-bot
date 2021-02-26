@@ -6,6 +6,7 @@ import current_weather
 import rain_notice
 import talking
 import wikipedia
+import bitly
 from settings import *
 
 app = Flask(__name__)
@@ -53,6 +54,12 @@ def talk():
 def wiki():
     text = request.form.get('text')  # type: str
     wikipedia.post_wiki(text)
+
+
+@app.route('/url', methods=['POST'])
+def url():
+    long_url = request.form.get('text')  # type: str
+    bitly.post_bitly_url(long_url)
 
 
 if __name__ == '__main__':
