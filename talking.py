@@ -3,17 +3,17 @@ import requests
 from settings import *
 
 
-def post_talk(text: str):
-    message = fetch_talk_message(text)
+def post_talk(word: str):
+    message = fetch_talk_message(word)
     payload = create_talk_payload(message)
     response = requests.post(SLACK_WEBHOOK_URL, payload)
     print(response)
 
 
-def fetch_talk_message(text: str) -> str:
+def fetch_talk_message(word: str) -> str:
     payload = {
         "apikey": A3RT_API_KEY,
-        "query": text
+        "query": word
     }
 
     response = requests.post("https://api.a3rt.recruit-tech.co.jp/talk/v1/smalltalk", payload)
