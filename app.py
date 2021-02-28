@@ -20,7 +20,7 @@ def hello_world():
     text = request.form.get('text')
     print(text)
 
-    text_list = text.split(' ')
+    text_list = text.split()
 
     if text_list[0] == "calendar":
         google_calendar.post_calendar()
