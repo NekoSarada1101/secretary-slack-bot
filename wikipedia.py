@@ -4,8 +4,8 @@ import urllib.parse
 from settings import *
 
 
-def post_wiki(text: str):
-    parse = urllib.parse.quote(text)  # type: str
+def post_wiki(word: str):
+    parse = urllib.parse.quote(word)  # type: str
     url = "http://ja.wikipedia.org/wiki/" + parse  # type: str
     print(url)
 
