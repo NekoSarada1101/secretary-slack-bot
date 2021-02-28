@@ -26,9 +26,9 @@ def hello_world():
     elif text_list[0] == "weather":
         current_weather.post_weather()
     elif text_list[0] == "wiki":
-        wikipedia.post_wiki(word=text[1])
+        wikipedia.post_wiki(word=text_list[1])
     elif text_list[0] == "url":
-        bitly.post_bitly_url(long_url=text[1])
+        bitly.post_bitly_url(long_url=text_list[1])
     else:
         talking.post_talk(word=text[0])
 
