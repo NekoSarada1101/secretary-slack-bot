@@ -14,17 +14,24 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST'])
 def hello_world():
-    data = {
-        "text": "hello_world"
-    }
+    post_data = request.get_data()  # type: str
+    print(post_data)
 
-    # Slackでは両方とも表示された
-    json_data = json.dumps(data).encode("utf-8")
-    response = requests.post(
-        SLACK_WEBHOOK_URL,
-        json_data)
-    print(response)
-    return 'Hello World!'
+    text = request.form.get('text')
+    print(text)
+
+    text_list = text.split(' ')
+
+    if text_list[0] == "calendar":
+        google_calendar.post_calendar()
+    elif text_list[0] == "weather":
+        weather.post_weather()
+    elif text_list[0] == "wiki":
+        wikipedia.post_wiki(word=text[1])
+    elif text_list[0] == "url":
+        bitly.post_bitly_url(long_url=text[1])
+    else:
+        talking.post_talk(word=text[0])
 
 
 @app.route('/calendar', methods=['POST'])
