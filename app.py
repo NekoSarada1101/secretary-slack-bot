@@ -25,7 +25,7 @@ def hello_world():
     if text_list[0] == "calendar":
         google_calendar.post_calendar()
     elif text_list[0] == "weather":
-        weather.post_weather()
+        current_weather.post_weather()
     elif text_list[0] == "wiki":
         wikipedia.post_wiki(word=text[1])
     elif text_list[0] == "url":
