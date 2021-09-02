@@ -4,7 +4,8 @@ import googleapiclient.discovery
 from datetime import datetime, timedelta, timezone
 from settings import *
 
-service = googleapiclient.discovery.build('calendar', 'v3', credentials=CREDENTIALS)
+service = googleapiclient.discovery.build(
+    'calendar', 'v3', credentials=CREDENTIALS)
 today = datetime.now(timezone(timedelta(hours=+9), 'JST'))
 
 
@@ -31,21 +32,29 @@ def fetch_calendar_event_list(calendar_id: str) -> str:
 
     page_token = None
     while True:
-        events = service.events().list(calendarId=calendar_id, pageToken=page_token,
-                                       timeMin=time_min, timeMax=time_max, singleEvents=True,
-                                       orderBy="startTime").execute()  # type: dict
+        events = service.events().list(
+            calendarId=calendar_id,
+            pageToken=page_token,
+            timeMin=time_min,
+            timeMax=time_max,
+            singleEvents=True,
+            orderBy="startTime").execute()  # type: dict
         list_text = ""  # type: str
         for event in events['items']:
-            start = event['start'].get('dateTime', event['start'].get('date'))  # type: str
+            start = event['start'].get(
+                'dateTime', event['start'].get('date'))  # type: str
 
             word_count = 10  # type: int
             if len(start) == word_count:
                 start = datetime.strptime(start, "%Y-%m-%d").strftime("%m/%d ")
                 list_text += start
             else:
-                start = datetime.strptime(start, "%Y-%m-%dT%H:%M:%S%z").strftime("%m/%d  %H:%M-")
-                end = event['end'].get('dateTime', event['end'].get('date'))  # type: str
-                end = datetime.strptime(end, "%Y-%m-%dT%H:%M:%S%z").strftime("%H:%M ")
+                start = datetime.strptime(
+                    start, "%Y-%m-%dT%H:%M:%S%z").strftime("%m/%d  %H:%M-")
+                end = event['end'].get(
+                    'dateTime', event['end'].get('date'))  # type: str
+                end = datetime.strptime(
+                    end, "%Y-%m-%dT%H:%M:%S%z").strftime("%H:%M ")
                 list_text += start + end
 
             list_text += "`" + event['summary'] + "`" + "\n"
@@ -60,7 +69,8 @@ def fetch_calendar_event_list(calendar_id: str) -> str:
 def create_calendar_payload(calendar_data: list) -> json:
     summary_list = []  # type: list
     for calendar_id in CALENDAR_ID_LIST:
-        calendar = service.calendars().get(calendarId=calendar_id).execute()  # type: dict
+        calendar = service.calendars().get(
+            calendarId=calendar_id).execute()  # type: dict
         summary_list.append(calendar["summary"])
 
     attachments = []  # type: list
