@@ -1,6 +1,6 @@
 import json
 import requests
-from settings import *
+from settings import SLACK_WEBHOOK_URL, A3RT_API_KEY
 
 
 def post_talk(word: str):
