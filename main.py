@@ -12,25 +12,31 @@ from settings import *
 app = Flask(__name__)
 
 
-@app.route('/', methods=['POST'])
+@app.route('/')
 def hello_world():
+    return 'Hello World!'
+
+
+@app.route('/slackbot', methods=['POST'])
+def slack_bot():
     post_data = request.get_data()  # type: str
     print(post_data)
 
     text = request.form.get('text')
-    text_list = text.split()
+    text_list = text.split(' ')
     print(text_list)
 
     if text_list[0] == "calendar":
-        google_calendar.post_calendar()
+        text = text_list[1] if len(text_list) == 2 else None
+        google_calendar.post_calendar(text)
     elif text_list[0] == "weather":
-        current_weather.post_weather()
+        current_weather.post_weather(text_list[1])
     elif text_list[0] == "wiki":
-        wikipedia.post_wiki(word=text_list[1])
+        wikipedia.post_wiki(text_list[1])
     elif text_list[0] == "url":
-        bitly.post_bitly_url(long_url=text_list[1])
-    else:
-        talking.post_talk(word=text[0])
+        bitly.post_bitly_url(text_list[1])
+    elif text_list[0] == 'talk':
+        talking.post_talk(text_list[1])
 
 
 @app.route('/calendar', methods=['POST'])

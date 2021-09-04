@@ -2,33 +2,38 @@ import json
 import requests
 import googleapiclient.discovery
 from datetime import datetime, timedelta, timezone
-from settings import *
+from settings import CREDENTIALS, SLACK_WEBHOOK_URL, CALENDAR_ID_LIST
 
 service = googleapiclient.discovery.build(
     'calendar', 'v3', credentials=CREDENTIALS)
-today = datetime.now(timezone(timedelta(hours=+9), 'JST'))
 
 
-def post_calendar():
-    calendar_event_list = fetch_all_calendar_event_list()  # type: list
-    payload = create_calendar_payload(calendar_event_list)  # type: json
+def post_calendar(date):
+    if date is not None:
+        select_date = date.strptime(date, '%Y-%m-%dT%H:%M:%S%z')
+    else:
+        select_date = datetime.now(timezone(timedelta(hours=+9), 'JST'))
+
+    calendar_event_list = fetch_all_calendar_event_list(select_date)  # type: list
+    payload = create_calendar_payload(
+        calendar_event_list,
+        select_date)  # type: json
     response = requests.post(SLACK_WEBHOOK_URL, payload)
     print(response)
 
 
-def fetch_all_calendar_event_list() -> list:
+def fetch_all_calendar_event_list(select_date) -> list:
     calendar_event_list = []  # type: list
     for calendar_id in CALENDAR_ID_LIST:
-        calendar_event_list.append(fetch_calendar_event_list(calendar_id))
+        calendar_event_list.append(
+            fetch_calendar_event_list(calendar_id, select_date))
 
     return calendar_event_list
 
 
-def fetch_calendar_event_list(calendar_id: str) -> str:
-    time_min = today.replace(hour=0, minute=0, second=0).strftime(
-        "%Y-%m-%dT%H:%M:%S%z")  # type: str
-    time_max = today.replace(hour=23, minute=59, second=59).strftime(
-        "%Y-%m-%dT%H:%M:%S%z")  # type: str
+def fetch_calendar_event_list(calendar_id: str, select_date: datetime) -> str:
+    time_min = select_date.replace(hour=0, minute=0, second=0).strftime("%Y-%m-%dT%H:%M:%S%z")  # type: str
+    time_max = select_date.replace(hour=23, minute=59, second=59).strftime("%Y-%m-%dT%H:%M:%S%z")  # type: str
 
     page_token = None
     while True:
@@ -49,12 +54,9 @@ def fetch_calendar_event_list(calendar_id: str) -> str:
                 start = datetime.strptime(start, "%Y-%m-%d").strftime("%m/%d ")
                 list_text += start
             else:
-                start = datetime.strptime(
-                    start, "%Y-%m-%dT%H:%M:%S%z").strftime("%m/%d  %H:%M-")
-                end = event['end'].get(
-                    'dateTime', event['end'].get('date'))  # type: str
-                end = datetime.strptime(
-                    end, "%Y-%m-%dT%H:%M:%S%z").strftime("%H:%M ")
+                start = datetime.strptime(start, "%Y-%m-%dT%H:%M:%S%z").strftime("%m/%d  %H:%M-")
+                end = event['end'].get('dateTime', event['end'].get('date'))  # type: str
+                end = datetime.strptime(end, "%Y-%m-%dT%H:%M:%S%z").strftime("%H:%M ")
                 list_text += start + end
 
             list_text += "`" + event['summary'] + "`" + "\n"
@@ -66,11 +68,12 @@ def fetch_calendar_event_list(calendar_id: str) -> str:
     return list_text
 
 
-def create_calendar_payload(calendar_data: list) -> json:
+def create_calendar_payload(
+        calendar_data: list,
+        select_date: datetime) -> json:
     summary_list = []  # type: list
     for calendar_id in CALENDAR_ID_LIST:
-        calendar = service.calendars().get(
-            calendarId=calendar_id).execute()  # type: dict
+        calendar = service.calendars().get(calendarId=calendar_id).execute()  # type: dict
         summary_list.append(calendar["summary"])
 
     attachments = []  # type: list
@@ -86,7 +89,7 @@ def create_calendar_payload(calendar_data: list) -> json:
 
     data = {  # type: dict
         "response_type": "ephemeral",
-        "text": today.strftime("%m月%d日") + "の予定をお知らせします。",
+        "text": select_date.strftime("%m月%d日") + "の予定をお知らせします。",
         "attachments":
             attachments
     }
