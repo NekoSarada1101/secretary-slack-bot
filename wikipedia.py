@@ -1,7 +1,7 @@
 import requests
 import json
 import urllib.parse
-from settings import *
+from settings import SLACK_WEBHOOK_URL
 
 
 def post_wiki(word: str):

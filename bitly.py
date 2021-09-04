@@ -1,6 +1,6 @@
 import requests
 import json
-from settings import *
+from settings import SLACK_WEBHOOK_URL, BITLY_API_ACCESS_TOKEN
 
 
 def post_bitly_url(long_url: str):
@@ -11,8 +11,7 @@ def post_bitly_url(long_url: str):
 
 
 def fetch_shorten_url(long_url: str) -> dict:
-    endpoint_url = "https://api-ssl.bitly.com/v3/shorten?access_token={}&longUrl={}".format(
-        BITLY_API_ACCESS_TOKEN, long_url)  # type: str
+    endpoint_url = "https://api-ssl.bitly.com/v3/shorten?access_token={}&longUrl={}".format(BITLY_API_ACCESS_TOKEN, long_url)  # type: str
 
     response = requests.post(endpoint_url)
     print(response.text)
