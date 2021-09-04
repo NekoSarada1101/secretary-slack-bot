@@ -19,7 +19,7 @@ def post_calendar(date):
         calendar_event_list,
         select_date)  # type: json
     response = requests.post(SLACK_WEBHOOK_URL, payload)
-    return response
+    print(response)
 
 
 def fetch_all_calendar_event_list(select_date) -> list:

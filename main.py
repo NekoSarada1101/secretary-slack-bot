@@ -28,7 +28,7 @@ def slack_bot():
 
     if text_list[0] == "calendar":
         text = text_list[1] if len(text_list) == 2 else None
-        response = google_calendar.post_calendar(text)
+        google_calendar.post_calendar(text)
     elif text_list[0] == "weather":
         current_weather.post_weather(text_list[1])
     elif text_list[0] == "wiki":
@@ -37,8 +37,7 @@ def slack_bot():
         bitly.post_bitly_url(text_list[1])
     elif text_list[0] == 'talk':
         talking.post_talk(text_list[1])
-    print(response)
-    return response
+    return 200
 
 
 @app.route('/calendar', methods=['POST'])
