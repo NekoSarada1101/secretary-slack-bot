@@ -34,6 +34,7 @@ def fetch_all_calendar_event_list(select_date) -> list:
 def fetch_calendar_event_list(calendar_id: str, select_date: datetime) -> str:
     time_min = select_date.replace(hour=0, minute=0, second=0).strftime("%Y-%m-%dT%H:%M:%S%z")  # type: str
     time_max = select_date.replace(hour=23, minute=59, second=59).strftime("%Y-%m-%dT%H:%M:%S%z")  # type: str
+    print({'calendar_id': calendar_id, 'time_min': time_min, 'time_max': time_max})
 
     page_token = None
     while True:
