@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, make_response
 import requests
 import json
 import google_calendar
@@ -37,7 +37,7 @@ def slack_bot():
         bitly.post_bitly_url(text_list[1])
     elif text_list[0] == 'talk':
         talking.post_talk(text_list[1])
-    return 200
+    return make_response('', 200)
 
 
 @app.route('/calendar', methods=['POST'])
