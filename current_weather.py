@@ -1,7 +1,7 @@
 import json
 import requests
 from datetime import datetime
-from settings import *
+from settings import SLACK_WEBHOOK_URL, LAT_LNG, OPEN_WEATHER_API_KEY
 
 
 def post_weather():
@@ -12,9 +12,9 @@ def post_weather():
 
 
 def fetch_current_weather_data() -> dict:
-    url = ("https://api.openweathermap.org/data/2.5/onecall?lat={}&lon={}&appid={}&"
-           "exclude=daily,minutely,hourly,alerts&units=metric&lang=ja"
-           .format(LAT_LNG[0], LAT_LNG[1], OPEN_WEATHER_API_KEY))  # type: str
+    url = (
+        "https://api.openweathermap.org/data/2.5/onecall?lat={}&lon={}&appid={}&exclude=daily,minutely,hourly,alerts&units=metric&lang=ja"
+        .format(LAT_LNG[0], LAT_LNG[1], OPEN_WEATHER_API_KEY))  # type: str
     response = requests.get(url)
     print(response)
     weather_data = json.loads(response.text)  # type: dict
@@ -22,8 +22,7 @@ def fetch_current_weather_data() -> dict:
 
 
 def create_weather_payload(weather_data: dict) -> json:
-    date = datetime.fromtimestamp(weather_data["current"]["dt"]).strftime(
-        "%m/%d %H:%M")  # type: str
+    date = datetime.fromtimestamp(weather_data["current"]["dt"]).strftime("%m/%d %H:%M")  # type: str
     weather = weather_data["current"]["weather"][0]["description"]  # type: str
     image = weather_data["current"]["weather"][0]["icon"]  # type: str
     temp = str(round(weather_data["current"]["temp"], 1)) + "°C"  # type: str

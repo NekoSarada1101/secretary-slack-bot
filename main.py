@@ -30,7 +30,7 @@ def slack_bot():
         text = text_list[1] if len(text_list) == 2 else None
         google_calendar.post_calendar(text)
     elif text_list[0] == "weather":
-        current_weather.post_weather(text_list[1])
+        current_weather.post_weather()
     elif text_list[0] == "wiki":
         wikipedia.post_wiki(text_list[1])
     elif text_list[0] == "url":
