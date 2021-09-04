@@ -10,7 +10,7 @@ service = googleapiclient.discovery.build(
 
 def post_calendar(date):
     if date is not None:
-        select_date = date.strptime(date, '%Y-%m-%dT%H:%M:%S%z')
+        select_date = datetime.strptime(date, '%Y-%m-%d')
     else:
         select_date = datetime.now(timezone(timedelta(hours=+9), 'JST'))
 
