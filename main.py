@@ -1,13 +1,10 @@
 from flask import Flask, request, make_response
-import requests
-import json
 import google_calendar
 import current_weather
 import rain_notice
 import talking
 import wikipedia
 import bitly
-from settings import *
 
 app = Flask(__name__)
 
